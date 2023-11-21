@@ -22,7 +22,7 @@ function App() {
   }, []);
 
   return (
-    <div className="grid text-center mt-5 gap-3 ">
+    <div className="grid text-center mt-5">
       <div className="quote-container p-4 position-relative">
         <Quote text={quote.content} author={quote.author} />
         <div
