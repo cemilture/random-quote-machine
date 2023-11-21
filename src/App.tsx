@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import Quote from "./assets/Quote";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 interface QuoteData {
   content: string;
@@ -10,18 +11,30 @@ interface QuoteData {
 function App() {
   const [quote, setQuote] = useState<QuoteData>({ author: "", content: "" });
 
-  useEffect(() => {
+  const fetchNewQuote = () => {
     fetch("https://api.quotable.io/random")
       .then((response) => response.json())
-      .then((data) => setQuote(data));
+      .then((data: QuoteData) => setQuote(data));
+  };
+
+  useEffect(() => {
+    fetchNewQuote();
   }, []);
-  console.log(quote);
 
   return (
-    <>
-      <Quote text={quote.content} author={quote.author} />
-      <button>New Quote!</button>
-    </>
+    <div className="grid text-center mt-5 gap-3 position-relative">
+      <div className="quote-container p-4 position-absolute top-50 start-50 translate-middle">
+        <Quote text={quote.content} author={quote.author} />
+        <div
+          className="position-absolute bottom-0 end-0"
+          style={{ margin: "10px" }}
+        >
+          <button className="btn btn-primary" onClick={fetchNewQuote}>
+            New Quote !
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 
