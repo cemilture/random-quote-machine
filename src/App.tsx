@@ -40,7 +40,6 @@ function App() {
       "_blank"
     );
   };
-
   // const shareOnFacebook = () => {
   //   const quoteText = `"${quote.content}" - ${quote.author}`;
   //   const encodedQuote = encodeURIComponent(quoteText);
