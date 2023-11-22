@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Quote from "./assets/Quote";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { TfiTumblr } from "react-icons/tfi";
+import { ImFacebook2 } from "react-icons/im";
 import { FaXTwitter } from "react-icons/fa6";
 
 interface QuoteData {
@@ -33,22 +34,21 @@ function App() {
   const shareOnTumblr = () => {
     const quoteText = `"${quote.content}" - ${quote.author}`;
     const encodedQuote = encodeURIComponent(quoteText);
-
-    // Open the Tumblr post creation page with a pre-filled caption
     window.open(
       `https://www.tumblr.com/new/text?caption=${encodedQuote}`,
       "_blank"
     );
   };
-  // const shareOnFacebook = () => {
-  //   const quoteText = `"${quote.content}" - ${quote.author}`;
-  //   const encodedQuote = encodeURIComponent(quoteText);
 
-  //   window.open(
-  //     `https://www.facebook.com/sharer/sharer.php?u=${encodedQuote}`,
-  //     "_blank"
-  //   );
-  // };
+  const shareOnFacebook = () => {
+    const quoteText = `"${quote.content}" - ${quote.author}`;
+    const encodedQuote = encodeURIComponent(quoteText);
+
+    window.open(
+      `https://www.facebook.com/sharer/sharer.php?u=${encodedQuote}`,
+      "_blank"
+    );
+  };
 
   return (
     <div
@@ -74,6 +74,15 @@ function App() {
               title="Share on Twitter !"
             >
               <FaXTwitter size={"50px"} />
+            </button>
+            <button
+              style={{ border: "none", backgroundColor: "transparent" }}
+              onClick={shareOnFacebook}
+              data-bs-toggle="tooltip"
+              data-bs-placement="bottom"
+              title="Share on Facebook !"
+            >
+              <ImFacebook2 size={"50px"} />
             </button>
             <button
               style={{ border: "none", backgroundColor: "transparent" }}
