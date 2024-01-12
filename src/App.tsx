@@ -7,24 +7,24 @@ import { FaXTwitter } from "react-icons/fa6";
 import axios from "axios";
 
 interface QuoteData {
-  q: string;
-  a: string;
+  quote: string;
+  author: string;
 }
 
 function App() {
-  const [quote, setQuote] = useState<QuoteData>({ a: "", q: "" });
+  const [quote, setQuote] = useState<QuoteData>({ author: "", quote: "" });
 
-  const fetchNewQuote = () => {
-    axios
-      .get("https://zenquotes.io/api/random/")
-      .then((response) => {
-        const data: QuoteData = response.data[0]; // Adjust this based on the actual response structure
-        setQuote(data);
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching quote:", error);
-      });
+  const fetchNewQuote = async () => {
+    try {
+      const response = await axios.get("../quotesDb.json");
+      const quotes = response.data;
+
+      const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+
+      setQuote(randomQuote);
+    } catch (error) {
+      console.error("Error fetching quote:", error);
+    }
   };
 
   useEffect(() => {
@@ -32,7 +32,7 @@ function App() {
   }, []);
 
   const shareOnTwitter = () => {
-    const tweetText = `"${quote.q}" - ${quote.a}`;
+    const tweetText = `"${quote.quote}" - ${quote.author}`;
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
       tweetText
     )}`;
@@ -40,7 +40,7 @@ function App() {
   };
 
   const shareOnTumblr = () => {
-    const quoteText = `"${quote.q}" - ${quote.a}`;
+    const quoteText = `"${quote.quote}" - ${quote.author}`;
     const encodedQuote = encodeURIComponent(quoteText);
     window.open(
       `https://www.tumblr.com/new/text?caption=${encodedQuote}`,
@@ -49,7 +49,7 @@ function App() {
   };
 
   const shareOnFacebook = () => {
-    const quoteText = `"${quote.q}" - ${quote.a}`;
+    const quoteText = `"${quote.quote}" - ${quote.author}`;
     const encodedQuote = encodeURIComponent(quoteText);
 
     window.open(
@@ -69,7 +69,7 @@ function App() {
       >
         <div className="d-flex flex-row ">
           <p className="fw-bold fs-2">
-            <Quote text={quote.q} author={quote.a} />
+            <Quote text={quote.quote} author={quote.author} />
           </p>
         </div>
         <div className="d-flex justify-content-between">
@@ -108,7 +108,19 @@ function App() {
           </button>
         </div>
       </div>
-      by cemilture
+      <footer>
+        by{" "}
+        <a
+          href="https://www.linkedin.com/in/cemilture"
+          style={{
+            textDecoration: "none",
+            color: "black",
+            fontWeight: "bold",
+          }}
+        >
+          cemilture
+        </a>
+      </footer>
     </div>
   );
 }
