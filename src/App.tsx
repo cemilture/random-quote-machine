@@ -4,19 +4,27 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { TfiTumblr } from "react-icons/tfi";
 import { ImFacebook2 } from "react-icons/im";
 import { FaXTwitter } from "react-icons/fa6";
+import axios from "axios";
 
 interface QuoteData {
-  content: string;
-  author: string;
+  q: string;
+  a: string;
 }
 
 function App() {
-  const [quote, setQuote] = useState<QuoteData>({ author: "", content: "" });
+  const [quote, setQuote] = useState<QuoteData>({ a: "", q: "" });
 
   const fetchNewQuote = () => {
-    fetch("https://api.quotable.io/random")
-      .then((response) => response.json())
-      .then((data: QuoteData) => setQuote(data));
+    axios
+      .get("https://zenquotes.io/api/random/")
+      .then((response) => {
+        const data: QuoteData = response.data[0]; // Adjust this based on the actual response structure
+        setQuote(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching quote:", error);
+      });
   };
 
   useEffect(() => {
@@ -24,7 +32,7 @@ function App() {
   }, []);
 
   const shareOnTwitter = () => {
-    const tweetText = `"${quote.content}" - ${quote.author}`;
+    const tweetText = `"${quote.q}" - ${quote.a}`;
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
       tweetText
     )}`;
@@ -32,7 +40,7 @@ function App() {
   };
 
   const shareOnTumblr = () => {
-    const quoteText = `"${quote.content}" - ${quote.author}`;
+    const quoteText = `"${quote.q}" - ${quote.a}`;
     const encodedQuote = encodeURIComponent(quoteText);
     window.open(
       `https://www.tumblr.com/new/text?caption=${encodedQuote}`,
@@ -41,7 +49,7 @@ function App() {
   };
 
   const shareOnFacebook = () => {
-    const quoteText = `"${quote.content}" - ${quote.author}`;
+    const quoteText = `"${quote.q}" - ${quote.a}`;
     const encodedQuote = encodeURIComponent(quoteText);
 
     window.open(
@@ -61,7 +69,7 @@ function App() {
       >
         <div className="d-flex flex-row ">
           <p className="fw-bold fs-2">
-            <Quote text={quote.content} author={quote.author} />
+            <Quote text={quote.q} author={quote.a} />
           </p>
         </div>
         <div className="d-flex justify-content-between">
